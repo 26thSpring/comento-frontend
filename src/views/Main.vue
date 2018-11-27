@@ -2,7 +2,14 @@
 <template>
   <div>
     <div class="MainSection">
-      <button class="Main_btn_filter" v-on:click="showModal = true">필터</button>
+      <!-- <Ads/> -->
+      <div class="Main_head">
+        <button class="Main_btn_filter" v-on:click="showModal = true">필터</button>
+        <div class="Main_head_sortBtns">
+          <span @click="sortAsc">오름차순</span>
+          <span @click="sortDesc">내림차순</span>
+        </div>
+      </div>
       <div v-if="categoryName !== null" class="Main_postList">
         <Post v-for="data in datas" :key="data.no" :data="data" :categoryName="categoryName"/>
       </div>
@@ -15,14 +22,28 @@
 import Modal from "@/components/Modal";
 import axios from "axios";
 import Post from "@/components/Post";
+import Ads from "@/components/Ads";
 
 export default {
-  components: { Modal, Post },
+  mounted() {
+    window
+      .$(".Main_head_sortBtns")
+      .find("span")
+      .click(e => {
+        window
+          .$(".Main_head_sortBtns")
+          .find("span")
+          .removeClass("active");
+        window.$(e.target).addClass("active");
+      });
+  },
+  components: { Modal, Post, Ads },
   data() {
     return {
       showModal: false,
       datas: null,
-      categoryName: null
+      categoryName: null,
+      adData: null
     };
   },
   methods: {
@@ -48,14 +69,43 @@ export default {
           }
         }
       });
+    },
+    sortAsc() {
+      if (this.datas) {
+        this.datas.sort((a, b) => {
+          return a.no - b.no;
+        });
+      }
+    },
+    sortDesc() {
+      if (this.datas) {
+        this.datas.sort((a, b) => {
+          return b.no - a.no;
+        });
+      }
     }
   }
 };
 </script>
 
 <style lang="less">
+@import "../styles/utils";
+
 .MainSection {
   margin: 2.5rem 2rem;
+
+  @media @mobile {
+    margin: 1.5rem 0.875rem;
+  }
+}
+.Main_head {
+  display: flex;
+  justify-content: space-between;
+  width: 30rem;
+
+  @media @mobile {
+    width: 100%;
+  }
 }
 .Main_btn_filter {
   background-color: #00c854;
@@ -69,6 +119,20 @@ export default {
   }
   &:focus {
     outline: none;
+  }
+}
+.Main_head_sortBtns {
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-end;
+  height: fit-content;
+  width: 8rem;
+
+  .active {
+    color: #ef5350;
+  }
+  span:hover {
+    cursor: pointer;
   }
 }
 .Main_modal {

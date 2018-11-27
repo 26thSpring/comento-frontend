@@ -19,49 +19,78 @@
 
 <script>
 export default {
-  created() {
-    console.log(this.categoryName);
-  },
-  data() {
-    return {};
-  },
   props: ["data", "categoryName"]
 };
 </script>
 
 <style lang="less">
+@import "../styles/utils";
+
 .Post {
   display: flex;
   flex-direction: column;
   width: 30rem;
+  height: 10rem;
   border: 2px solid #757575;
   margin: 0.875rem 0;
+
+  @media @mobile {
+    width: 100%;
+    height: 9.5rem;
+    margin: 0.875rem 0;
+  }
 }
 .Post_header {
+  border: 0px solid #757575;
+  border-bottom-width: 2px;
+  padding: 0.5rem;
   &_categoryName {
     float: left;
   }
   &_postNo {
     float: right;
   }
+  @media @mobile {
+    font-size: 0.85rem;
+  }
 }
 
 .Post_body {
-  margin-top: 0.5rem;
+  flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
 }
 .Post_info {
-  display: flex;
   &_email {
+    display: inline;
     margin-right: 0.3rem;
   }
   &_regdate {
+    display: inline;
     margin-left: 0.3rem;
+  }
+  @media @mobile {
+    font-size: 0.85rem;
   }
 }
 .Post_value {
-}
-.Post_value_title {
-}
-.Post_value_content {
+  margin-top: 1rem;
+  &_title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-all;
+  }
+  &_content {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-all;
+  }
 }
 </style>
